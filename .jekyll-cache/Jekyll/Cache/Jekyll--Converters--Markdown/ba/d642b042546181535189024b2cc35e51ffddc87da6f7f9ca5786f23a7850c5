@@ -1,0 +1,110 @@
+I"&<p><a href="https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-mvc-1">스프링 MVC 1편 - 백엔드 웹 개발 핵심 기술</a></p>
+
+<h1 id="기존-서블릿jsp-의-한계">기존 서블릿+JSP 의 한계</h1>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="nc">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span><span class="nc">HttpServletResponse</span> <span class="n">response</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">ServletException</span><span class="o">,</span> <span class="nc">IOException</span><span class="o">{</span>		
+  <span class="nc">String</span> <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="s">"username"</span><span class="o">);</span>
+  <span class="kt">int</span> <span class="n">age</span> <span class="o">=</span> <span class="nc">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">request</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="s">"age"</span><span class="o">));</span>
+  
+  <span class="c1">// logic</span>
+  
+  <span class="nc">String</span> <span class="n">viewPath</span> <span class="o">=</span> <span class="s">"/WEB-INF/shopping/product.jsp"</span><span class="o">;</span>
+  <span class="nc">RequestDispatcher</span> <span class="n">dispatcher</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="na">getRequestDispatcher</span><span class="o">(</span><span class="n">viewPath</span><span class="o">);</span>
+  <span class="n">dispatcher</span><span class="o">.</span><span class="na">forward</span><span class="o">(</span><span class="n">request</span><span class="o">,</span> <span class="n">response</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ol>
+  <li>중복 소스
+    <ul>
+      <li>HttpServletRequest request, HttpServletResponse response</li>
+      <li>CharacterEncoding</li>
+      <li>뷰 호출함수</li>
+    </ul>
+  </li>
+  <li>ViewPath 관리
+    <ul>
+      <li>suffix, prefix 가 바뀌면 모든 소스에서 다 바꿔야 함</li>
+    </ul>
+  </li>
+  <li>공통처리를 못한다</li>
+</ol>
+
+<h1 id="spring-mvc-기본-구조">Spring MVC 기본 구조</h1>
+<p><img src="/assets/img/SpringArchitecture.jpg" alt="SpringArchitecture" /></p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@PostMapping</span><span class="o">(</span><span class="s">"/shopping/add"</span><span class="o">)</span> 
+<span class="kd">public</span> <span class="nc">String</span> <span class="nf">save</span><span class="o">(</span><span class="nd">@ModelAttribute</span> <span class="nc">Item</span> <span class="n">item</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">item</span> <span class="o">=</span> <span class="n">itemRepository</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">item</span><span class="o">);</span>
+  
+  <span class="c1">// logic</span>
+
+  <span class="k">return</span> <span class="s">"/item/list"</span><span class="o">;</span>
+<span class="o">}</span>	
+</code></pre></div></div>
+<p>/shopping/add를 호출하면…</p>
+
+<ol>
+  <li>
+    <p>url에 상관없이 DispatcherServlet 호출</p>
+  </li>
+  <li>
+    <p>/shopping/add 와 매핑된 public String save(@ModelAttribute Item item) 조회</p>
+  </li>
+  <li>조회된 Handler 실행할 수 있는 어댑터 조회
+    <ul>
+      <li>public String save(@PathVariable long itemId, Model model), public String save(@RequestParam String item) 등 편의에 따라 다양한 parameter를 전달할 수 있다. 파라미터 종류에 맞게 HandlerAdapter에서 처리해준다.</li>
+      <li>Handler를 110V 또는 220V 콘센트, HandlerAdapter를 변압기 또는 어댑터 정도로 생각하면 될 것 같다.</li>
+    </ul>
+  </li>
+  <li>
+    <p>조회된 어댑터 실행</p>
+  </li>
+  <li>
+    <p>작성한 Handler의 로직 실행</p>
+  </li>
+  <li>
+    <p>HandlerAdapter 에 의해 반환된 ViewPath(/item/list)를 /WEB-INF/item/list.jsp로 변환하고 jsp파일을 html로 변환</p>
+  </li>
+  <li>View 를 클라이언트에 전달</li>
+</ol>
+
+<p>** 2번과정이 개인적으로 이해 안된다.<br />
+1) 강의에서는 url에 따른 handlerMapping을 직접 했다.<br />
+2) 또한 상속을 직접 했다.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kt">void</span> <span class="nf">initHandlerAdapters</span><span class="o">()</span> <span class="o">{</span>
+  <span class="n">handlerAdapters</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">ControllerV3HandlerAdapter</span><span class="o">());</span> <span class="c1">//ControllerV3를 지원하는 Adapter</span>
+  <span class="n">handlerAdapters</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">ControllerV4HandlerAdapter</span><span class="o">());</span> <span class="c1">//ControllerV4를 지원하는 Adapter</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">handlerMappingMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"/front-controller/v5/v3/members/new-form"</span><span class="o">,</span> <span class="k">new</span> <span class="nc">MemberFormControllerV3</span><span class="o">());</span>
+<span class="n">handlerMappingMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"/front-controller/v5/v3/members/save"</span><span class="o">,</span> <span class="k">new</span> <span class="nc">MemberSaveControllerV3</span><span class="o">());</span>
+<span class="n">handlerMappingMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"/front-controller/v5/v3/members"</span><span class="o">,</span> <span class="k">new</span> <span class="nc">MemberListControllerV3</span><span class="o">());</span>
+<span class="n">handlerMappingMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"/front-controller/v5/v4/members/new-form"</span><span class="o">,</span> <span class="k">new</span> <span class="nc">MemberFormControllerV4</span><span class="o">());</span>
+<span class="n">handlerMappingMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"/front-controller/v5/v4/members/save"</span><span class="o">,</span> <span class="k">new</span> <span class="nc">MemberSaveControllerV4</span><span class="o">());</span>
+<span class="n">handlerMappingMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"/front-controller/v5/v4/members"</span><span class="o">,</span> <span class="k">new</span> <span class="nc">MemberListControllerV4</span><span class="o">());</span>
+</code></pre></div></div>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MemberFormControllerV3</span> <span class="kd">implements</span> <span class="nc">ControllerV3</span><span class="o">{</span>
+	
+	<span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="nc">ModelView</span> <span class="nf">process</span><span class="o">(</span><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">paramMap</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="k">new</span> <span class="nf">ModelView</span><span class="o">(</span><span class="s">"new-form"</span><span class="o">);</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>하지만 실제로 스프링에서는 두 가지 과정을 알아서 해준다.<br />
+아마 Method의 input parameter, return type 등을 보고 하지 않을까 생각된다.</p>
+
+<h3 id="추가내용">추가내용</h3>
+<p>Handler vs Controller<br />
+<a href="https://www.quora.com/What-is-an-handler-in-programming">www.quora.com/What-is-an-handler-in-programming</a><br />
+<a href="https://web.csulb.edu/~pnguyen/cecs475/pdf/Web%20API%20Controller.pdf">web.csulb.edu/~pnguyen/cecs475/pdf/Web%20API%20Controller.pdf</a><br />
+<a href="https://stackoverflow.com/questions/30165625/whats-difference-between-controller-and-handler-in-spring-mvc">https://stackoverflow.com/questions/30165625/whats-difference-between-controller-and-handler-in-spring-mvc</a></p>
+
+<p>Handler : 이벤트 발생시 호출 되는 코드
+Controller : 이벤트 발생시(=HttpRequest) 호출 되는 코드(=작성한 코드 처리 후 response 반환)</p>
+
+<p>Handler, Controller 모두 Spring에서만 한정적으로 쓰이는 단어가 아니다.
+Spring이 HttpRequest만 처리하는 게 아니기 때문에(ex. MessageHandler) handler라는 범용적인 단어를 쓴 것 같다.</p>
+:ET

@@ -1,0 +1,216 @@
+I"og<p><a href="https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-mvc-1">스프링 MVC 1편 - 백엔드 웹 개발 핵심 기술</a></p>
+
+<h2 id="welcome-page">Welcome Page</h2>
+<p>welcome page 경로 : <code class="language-plaintext highlighter-rouge">src/main/resource/static/index.html</code></p>
+
+<h2 id="url-매핑">URL 매핑</h2>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UrlMappingController</span> <span class="o">{</span>
+	
+	<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/basic"</span><span class="o">)</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">basic</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="s">"/view/basic"</span><span class="o">;</span>
+	<span class="o">}</span>
+</code></pre></div></div>
+<p><code class="language-plaintext highlighter-rouge">@Controller</code> : Controller의 역할을 수행하는 Bean으로 등록<br />
+<code class="language-plaintext highlighter-rouge">@RequestMapping</code> : 요청 URL을 어떤 메소드가 처리할 지 결정<br />
+해당 코드에서는 <code class="language-plaintext highlighter-rouge">/basic</code> 을 받으면 <code class="language-plaintext highlighter-rouge">basic()</code>이 처리하고 <code class="language-plaintext highlighter-rouge">/view/basic</code>이 View로 반환된다</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Controller</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/mapping/v1/very/long/path"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UrlMappingController</span> <span class="o">{</span>
+	
+	<span class="nd">@RequestMapping</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">blank</span><span class="o">(){</span>
+		<span class="k">return</span> <span class="s">"/view/blank"</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/basic"</span><span class="o">)</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">basic</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="s">"/view/basic"</span><span class="o">;</span>
+	<span class="o">}</span>
+</code></pre></div></div>
+<p>위와 같은 경우는
+<code class="language-plaintext highlighter-rouge">/mapping/v1/very/long/path</code> 는 <code class="language-plaintext highlighter-rouge">blank()</code><br />
+<code class="language-plaintext highlighter-rouge">/mapping/v1/very/long/path/basic</code> 는 <code class="language-plaintext highlighter-rouge">basic()</code> 메서드가 호출된다</p>
+
+<h2 id="restcontrollerresponsebody">@RestController(@ResponseBody)</h2>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UrlMappingController</span> <span class="o">{</span>
+	
+	<span class="nd">@ResponseBody</span>	
+	<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/basic"</span><span class="o">)</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">basic</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="s">"/view/basic"</span><span class="o">;</span>
+	<span class="o">}</span>
+</code></pre></div></div>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RestController</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UrlMappingController</span> <span class="o">{</span>
+	
+	<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/basic"</span><span class="o">)</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">basic</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="s">"/view/basic"</span><span class="o">;</span>
+	<span class="o">}</span>
+</code></pre></div></div>
+<p><code class="language-plaintext highlighter-rouge">@ResponseBody</code> annotation을 쓰면 <code class="language-plaintext highlighter-rouge">"/view/basic"</code> 경로의 view 대신 <code class="language-plaintext highlighter-rouge">"/view/basic"</code>라는 String이 반환된다.(<code class="language-plaintext highlighter-rouge">@ResponseBody</code>는 Class에도 쓸 수 있다)
+<code class="language-plaintext highlighter-rouge">@RestController</code> = <code class="language-plaintext highlighter-rouge">@Controller</code> + <code class="language-plaintext highlighter-rouge">@ResponseBody</code> 이다</p>
+
+<h2 id="http-메서드">Http 메서드</h2>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span><span class="o">=</span><span class="s">"path"</span><span class="o">,</span> <span class="n">method</span><span class="o">=</span><span class="nc">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span><span class="o">=</span><span class="s">"path"</span><span class="o">,</span> <span class="n">method</span><span class="o">=</span><span class="nc">RequestMethod</span><span class="o">.</span><span class="na">POST</span><span class="o">)</span>
+<span class="nd">@GetMapping</span><span class="o">(</span><span class="s">"path"</span><span class="o">)</span>
+<span class="nd">@PostMapping</span><span class="o">(</span><span class="s">"path"</span><span class="o">)</span>
+</code></pre></div></div>
+<p><code class="language-plaintext highlighter-rouge">method=RequestMethod.GET</code> 를 선언하면 Get 메서드만 처리하고 다른 메서드는 접근 제한된다. 짧게 <code class="language-plaintext highlighter-rouge">@GetMapping</code>으로 쓸 수도 있다.</p>
+
+<h2 id="requestbody">RequestBody</h2>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="c1">// 방법1</span>
+	<span class="nd">@PostMapping</span><span class="o">(</span><span class="s">"/request-body"</span><span class="o">)</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">requestBodyStringV4</span><span class="o">(</span><span class="nd">@RequestBody</span> <span class="nc">String</span> <span class="n">requestBody</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+		<span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"requestBody = {}"</span><span class="o">,</span> <span class="n">requestBody</span><span class="o">);</span>
+		<span class="k">return</span> <span class="s">"/success"</span><span class="o">;</span>
+	<span class="o">}</span>	
+
+	<span class="c1">// 방법2 - JSON 데이터 처리</span>
+	<span class="nd">@PostMapping</span><span class="o">(</span><span class="s">"/request-body-json"</span><span class="o">)</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">requestBodyJsonV3</span><span class="o">(</span><span class="nd">@RequestBody</span> <span class="nc">MyData</span> <span class="n">data</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+		<span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"nickname={}, rank={}"</span><span class="o">,</span> <span class="n">data</span><span class="o">.</span><span class="na">getNickname</span><span class="o">(),</span> <span class="n">data</span><span class="o">.</span><span class="na">getRank</span><span class="o">());</span>		
+		<span class="k">return</span> <span class="s">"/success"</span><span class="o">;</span>
+	<span class="o">}</span>
+</code></pre></div></div>
+<p>위와 같은 방법으로 requestBody에 있는 값을 String으로 가져올 수 있다
+<code class="language-plaintext highlighter-rouge">@RequestBody</code>를 없애면 <code class="language-plaintext highlighter-rouge">@ModelAttribute</code>로 인식되어 필수로 넣어야 한다.(RequestParam의 방법7 참고)
+방법2에서 파라미터로 자바객체가 들어오면 JsonConverter로 동작, <code class="language-plaintext highlighter-rouge">content-type</code>도 <code class="language-plaintext highlighter-rouge">application/json</code> 이어야 한다.</p>
+
+<h2 id="requestparam">RequestParam</h2>
+<p><code class="language-plaintext highlighter-rouge">/request-param-(version)?nickname=myNickname&amp;rank=3</code><br />
+위와 같은 요청을 보내면 <code class="language-plaintext highlighter-rouge">@RequestParam</code> 으로 query parameter를 처리할 수 있다.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="c1">// 방법1</span>
+	<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/request-param-v1"</span><span class="o">)</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">requestParamV1</span><span class="o">(</span>
+			<span class="nd">@RequestParam</span><span class="o">(</span><span class="s">"nickname"</span><span class="o">)</span> <span class="nc">String</span> <span class="n">nickname</span><span class="o">,</span>
+			<span class="nd">@RequestParam</span><span class="o">(</span><span class="s">"rank"</span><span class="o">)</span> <span class="kt">int</span> <span class="n">rank</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span><span class="o">{</span>
+		<span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"nickname = {}, rank = {}"</span><span class="o">,</span> <span class="n">nickname</span><span class="o">,</span> <span class="n">rank</span><span class="o">);</span>				
+		<span class="k">return</span> <span class="s">"/success"</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="c1">//방법2 - @RequestParam의 value 와 변수명이 같다면 @RequestParam를 생략해도 된다</span>
+	<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/request-param-v2"</span><span class="o">)</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">requestParamV2</span><span class="o">(</span>
+			<span class="nd">@RequestParam</span> <span class="nc">String</span> <span class="n">nickname</span><span class="o">,</span>
+			<span class="nd">@RequestParam</span> <span class="kt">int</span> <span class="n">rank</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span><span class="o">{</span>
+		<span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"nickname = {}, rank = {}"</span><span class="o">,</span> <span class="n">nickname</span><span class="o">,</span> <span class="n">rank</span><span class="o">);</span>				
+		<span class="k">return</span> <span class="s">"/success"</span><span class="o">;</span>
+	<span class="o">}</span>
+	
+	<span class="c1">//방법3</span>
+	<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/request-param-v3"</span><span class="o">)</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">requestParamV3</span><span class="o">(</span><span class="nc">String</span> <span class="n">nickname</span><span class="o">,</span> <span class="kt">int</span> <span class="n">rank</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span><span class="o">{</span>
+		<span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"nickname = {}, rank = {}"</span><span class="o">,</span> <span class="n">nickname</span><span class="o">,</span> <span class="n">rank</span><span class="o">);</span>				
+		<span class="k">return</span> <span class="s">"/success"</span><span class="o">;</span>
+	<span class="o">}</span>
+	
+	<span class="c1">//방법4 - required 따로 선언하지 않으면 true, 해당 파라미터가이 queryparameter에 존재하지 않으면 Bad Request 오류</span>
+	<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/request-param-v4"</span><span class="o">)</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">requestParamV4</span><span class="o">(</span>
+			<span class="nd">@RequestParam</span><span class="o">(</span><span class="n">required</span><span class="o">=</span><span class="kc">true</span><span class="o">)</span> <span class="nc">String</span> <span class="n">nickname</span><span class="o">,</span>
+			<span class="nd">@RequestParam</span><span class="o">(</span><span class="n">required</span><span class="o">=</span><span class="kc">false</span><span class="o">)</span> <span class="nc">Integer</span> <span class="n">rank</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span><span class="o">{</span>
+		<span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"nickname = {}, rank = {}"</span><span class="o">,</span> <span class="n">nickname</span><span class="o">,</span> <span class="n">rank</span><span class="o">);</span>				
+		<span class="k">return</span> <span class="s">"/success"</span><span class="o">;</span>
+	<span class="o">}</span>	
+	
+	<span class="c1">//방법5 - 디폴트값</span>
+	<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/request-param-default"</span><span class="o">)</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">requestParamDefault</span><span class="o">(</span>
+			<span class="nd">@RequestParam</span><span class="o">(</span><span class="n">required</span><span class="o">=</span><span class="kc">false</span><span class="o">,</span> <span class="n">defaultValue</span> <span class="o">=</span> <span class="s">"guest"</span><span class="o">)</span> <span class="nc">String</span> <span class="n">nickname</span><span class="o">,</span>
+			<span class="nd">@RequestParam</span><span class="o">(</span><span class="n">required</span><span class="o">=</span><span class="kc">false</span><span class="o">,</span> <span class="n">defaultValue</span> <span class="o">=</span> <span class="s">"-1"</span><span class="o">)</span> <span class="nc">Integer</span> <span class="n">rank</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span><span class="o">{</span>
+		<span class="c1">//default 있으면 required 필요 없음.</span>
+		<span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"nickname = {}, rank = {}"</span><span class="o">,</span> <span class="n">nickname</span><span class="o">,</span> <span class="n">rank</span><span class="o">);</span>				
+		<span class="k">return</span> <span class="s">"/success"</span><span class="o">;</span>
+	<span class="o">}</span>
+	
+	<span class="c1">//방법6 - map으로 받기</span>
+	<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/request-param-map"</span><span class="o">)</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">requestParamMap</span><span class="o">(</span>
+			<span class="nd">@RequestParam</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">paramMap</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span><span class="o">{</span>
+		<span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"nickname = {}, rank = {}"</span><span class="o">,</span> <span class="n">paramMap</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"nickname"</span><span class="o">),</span> <span class="n">paramMap</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"rank"</span><span class="o">));</span>
+		<span class="k">return</span> <span class="s">"/success"</span><span class="o">;</span>
+	<span class="o">}</span>
+	
+	<span class="c1">//방법7 - 자바 객체에 자동으로 set </span>
+	<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/model-attribute-v1"</span><span class="o">)</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">modelAttributeV1</span><span class="o">(</span><span class="nd">@ModelAttribute</span> <span class="nc">MyData</span> <span class="n">data</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span><span class="o">{</span>
+		<span class="cm">/**
+		 * MyData 클래스
+		 * 변수 : String nickname, int rank
+		 * 각 변수에 대해 getter, setter 존재
+		 */</span>
+
+	<span class="c1">//	MyData data = new MyData();</span>
+	<span class="c1">//	data.setRank(rank);</span>
+	<span class="c1">//	data.setNickname(nickname); 여기까지 자동으로 세팅</span>
+
+		<span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"nickname = {}, rank = {}"</span><span class="o">,</span> <span class="n">data</span><span class="o">.</span><span class="na">getNickname</span><span class="o">(),</span> <span class="n">data</span><span class="o">.</span><span class="na">getRank</span><span class="o">());</span>
+		<span class="k">return</span> <span class="s">"/success"</span><span class="o">;</span>
+	<span class="o">}</span>	
+	
+	<span class="c1">//방법8 - 생성한 객체에 자동으로 set </span>
+	<span class="nd">@ResponseBody</span>
+	<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/model-attribute-v2"</span><span class="o">)</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">modelAttributeV2</span><span class="o">(</span><span class="nc">MyData</span> <span class="n">data</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span><span class="o">{</span>
+		<span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"nickname = {}, rank = {}"</span><span class="o">,</span> <span class="n">data</span><span class="o">.</span><span class="na">getNickname</span><span class="o">(),</span> <span class="n">data</span><span class="o">.</span><span class="na">getRank</span><span class="o">());</span>
+		<span class="k">return</span> <span class="s">"/success"</span><span class="o">;</span>
+	<span class="o">}</span>		
+
+	<span class="c1">//기타(PathVariable) : url 경로의 값을 읽는다</span>
+	<span class="nd">@ResponseBody</span>
+	<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/path-variable/{nickName}"</span><span class="o">)</span> <span class="c1">// http://localhost:8080/path-variable/nickname</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">mappingPath</span><span class="o">(</span><span class="nd">@PathVariable</span><span class="o">(</span><span class="s">"nickName"</span><span class="o">)</span> <span class="nc">String</span> <span class="n">nickName</span><span class="o">)</span> <span class="o">{</span>
+		<span class="c1">// public String mappingPath(@PathVariable String nickName) { // 이렇게 url과 변수명 맞춰도 된다</span>
+		<span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"mappingPath nickName = {}"</span><span class="o">,</span> <span class="n">nickName</span><span class="o">);</span>
+		<span class="k">return</span> <span class="s">"ok"</span><span class="o">;</span>
+	<span class="o">}</span>
+	
+	<span class="c1">//기타(PathVariable) - @PathVariable의 value와 변수명이 같다면 생략해도 된다</span>
+	<span class="nd">@ResponseBody</span>
+	<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/path-variable/{nickName}/{rank}"</span><span class="o">)</span> <span class="c1">// http://localhost:8080/path-variable/nickname/1</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">mappingPath2</span><span class="o">(</span><span class="nd">@PathVariable</span> <span class="nc">String</span> <span class="n">nickName</span><span class="o">,</span> <span class="nd">@PathVariable</span> <span class="kt">int</span> <span class="n">rank</span><span class="o">)</span> <span class="o">{</span>
+		<span class="c1">// public String mappingPath(@PathVariable String nickName) { // 이렇게 url과 변수명 맞춰도 된다</span>
+		<span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"mappingPath nickName = {}, rank = {}"</span><span class="o">,</span> <span class="n">nickName</span><span class="o">,</span> <span class="n">rank</span><span class="o">);</span>
+		<span class="k">return</span> <span class="s">"ok"</span><span class="o">;</span>
+	<span class="o">}</span>
+	
+	<span class="c1">//기타(PathVariable) - 3</span>
+	<span class="nd">@ResponseBody</span>
+	<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/path-variable/{nickName}/{rank}/3"</span><span class="o">)</span> <span class="c1">// http://localhost:8080/path-variable/nickname/1/3</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">mappingPath3</span><span class="o">(</span><span class="nd">@PathVariable</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">pathVarsMap</span><span class="o">)</span> <span class="o">{</span>
+		<span class="c1">// public String mappingPath(@PathVariable String nickName) { // 이렇게 url과 변수명 맞춰도 된다</span>
+		<span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"mappingPath nickName = {}, rank = {}"</span><span class="o">,</span> <span class="n">pathVarsMap</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"nickName"</span><span class="o">),</span> <span class="n">pathVarsMap</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"rank"</span><span class="o">));</span>
+		<span class="k">return</span> <span class="s">"ok"</span><span class="o">;</span>
+	<span class="o">}</span>	
+</code></pre></div></div>
+
+<p>참고로 Post Method의 <code class="language-plaintext highlighter-rouge">x-www-form-urlencoded</code> 도 위와 똑같이 적용된다.</p>
+
+<p>query param과 <code class="language-plaintext highlighter-rouge">x-www-form-urlencoded</code> 를 동시에 넣으면 어떻게 될까?</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="nd">@ResponseBody</span>
+	<span class="nd">@PostMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/request-body-x-www-form-urlencoded"</span><span class="o">)</span>
+	<span class="kd">public</span> <span class="nc">MyData</span> <span class="nf">requestBodyUrlencodedV1</span><span class="o">(</span><span class="nc">MyData</span> <span class="n">data</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+		<span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"nickname={}, rank={}"</span><span class="o">,</span> <span class="n">data</span><span class="o">.</span><span class="na">getNickname</span><span class="o">(),</span> <span class="n">data</span><span class="o">.</span><span class="na">getRank</span><span class="o">());</span>		
+		<span class="k">return</span> <span class="n">data</span><span class="o">;</span>
+	<span class="o">}</span>
+</code></pre></div></div>
+<p><img src="/assets/img/paramErrorCheck.png" alt="SpringArchitecture" />
+String은 모두 값을 받고 <code class="language-plaintext highlighter-rouge">int</code>는 query parameter만 받았다.<br />
+이렇게는 하지 않는 것이 좋을 것 같다.</p>
+
+<h2 id="responsebody">ResponseBody</h2>
+<p>앞서 설명했던 것처럼 Class를 @RestController로 선언하면 View가 아닌 Json으로 반환된다.<br />
+아래는 model에 값을 넣고 View를 반환하는 방법이다.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/response-view-v2"</span><span class="o">)</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">responseViewV2</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"data"</span><span class="o">,</span><span class="s">"hello"</span><span class="o">);</span>
+		<span class="k">return</span> <span class="s">"response/hello"</span><span class="o">;</span>
+	<span class="o">}</span>
+</code></pre></div></div>
+:ET

@@ -1,1 +1,1 @@
-Sitemap: /sitemap.xml
+Sitemap: https://jhong92-pro.github.io/sitemap.xml
