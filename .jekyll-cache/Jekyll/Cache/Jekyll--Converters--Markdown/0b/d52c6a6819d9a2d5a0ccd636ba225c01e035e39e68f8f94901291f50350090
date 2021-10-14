@@ -1,0 +1,8 @@
+I"�<h2 id="server-client-architecture">Server Client Architecture</h2>
+<p>서버</p>
+<ul>
+  <li>always-on host</li>
+  <li>IP 주소 고정</li>
+  <li>데이터 센터 존재</li>
+</ul>
+:ET
