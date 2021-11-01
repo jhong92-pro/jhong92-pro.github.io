@@ -1,0 +1,88 @@
+I"&<h2 id="transport-vs-network-layer">Transport vs. network layer</h2>
+<ul>
+  <li>Network layer : 호스트끼리 통신</li>
+  <li>Transport layer : 호스트의 프로세스끼리 통신</li>
+</ul>
+
+<h2 id="multiplexing-demultiplexing">Multiplexing, Demultiplexing</h2>
+<p><strong>Multiplexings</strong></p>
+<ul>
+  <li>Multiplexing : 여러신호를 변환하여 하나의 매체에 담아 보냄</li>
+  <li>데이터 송신 시 ‘여러’ 소켓의 데이터가 header를 달고 ‘하나의’ transport layer로 보내짐</li>
+</ul>
+
+<p><strong>Demultiplexing</strong></p>
+<ul>
+  <li>Demultiplexing : 매체에 담긴 신호를 원래의 신호로 복원</li>
+  <li>데이터 수신 시 transport layer로 부터 받은 데이터 여러개를 알맞은 소켓으로 보냄
+TCP는 호스트의 application마다 socket이 있기 때문에
+ source IP address
+ source port number
+ dest IP address
+ dest port number
+위 네 개의 정보를 보고 알맞은 소켓으로 데이터 전달(UDP는 source 정보 필요 없음)</li>
+</ul>
+
+<h2 id="udp">UDP</h2>
+<ul>
+  <li>최소기능</li>
+  <li>best effort : 곧이 곧대로 데이터 전달만 해줌</li>
+  <li>connectionless : 데이터끼리 독립적임, 순서없음</li>
+  <li>사용 예
+    <ul>
+      <li>스트리밍 : 손실 나도 ok, 속도 보장 해야함</li>
+      <li>DNS : 한번 쿼리보내고 받으면 끝나기 때문에 connection 안맺어도 됨</li>
+    </ul>
+  </li>
+  <li>reliable transfer 하려면 application 단에서 순서, 에러체크 해야 함</li>
+</ul>
+
+<p><strong>UDP checksum</strong>
+오류 검출</p>
+<ul>
+  <li>헤더의 모든 값을 16비트 단위로 모두 더함</li>
+  <li>add carry bit</li>
+  <li>1의 보수(bit 반전)
+오류 검출만 하고 이후로 하는 건 없다</li>
+</ul>
+
+<h2 id="reliable-data-transfer이-되기-위한-조건">reliable data transfer이 되기 위한 조건</h2>
+<p>reliable data transfer : 데이터가 오류없이 전송되는 것</p>
+<ul>
+  <li>Checksum : 오류발생 여부를 알려줘야 함</li>
+  <li>Acknowledgement : receiver가 sender에게 패킷을 받았다고 알려줌</li>
+  <li>Negative Acknowledgement : receiver가 sender에게 어떤 패킷이 오류인지 알림</li>
+  <li>Timer : 일정 시간 후 ack 또는 n-ack 이 오지 않으면 network drop 되었다고 판단, 재전송
+같은 sequence number data 데이터 받으면<code class="language-plaintext highlighter-rouge">(=재전송으로 인해 receiver가 동일한 데이터 받으면)</code> app에서 버린다</li>
+  <li>Pipeline : 여러개의 데이터를 전송할 수 있음</li>
+  <li>Window : pipeline에서 ack를 받지 않고 최대 전달 할 수 있는 패킷의 수</li>
+</ul>
+
+<h2 id="tcp">TCP</h2>
+<p><strong>특징</strong></p>
+<ul>
+  <li>point to point : one sender, one receiver<code class="language-plaintext highlighter-rouge">(!=multicasting)</code></li>
+  <li>byte stream : 데이터의 경계 없음, msg buffer에 메시지 담아 처리</li>
+  <li>pipelined</li>
+  <li>duplex : 동일 회선으로 쌍방 소통 가능</li>
+  <li>connection-oriented</li>
+  <li>flow control, congestion control</li>
+</ul>
+
+<p><strong>TCP Segment Header</strong></p>
+<ul>
+  <li>source port #, dest port #</li>
+  <li>sequence number</li>
+  <li>acknowledgement number : 이 값이 N 이면 N-1까진 잘 받았고 N번째 값 받을 차례라는 뜻</li>
+  <li>flg
+URG : urgent data(잘 안씀)
+ACK : ack 정보가 있다는 뜻
+PSH : push data now
+RST, SYN, FIN : connection setup 때 씀</li>
+  <li>receive window : buffer size 에 의해 결정, 이 값이 M 이라면 N~M 번째 데이터는 stream으로 계속 보내도 됨</li>
+</ul>
+
+<p><a href="https://commons.wikimedia.org/wiki/File:TCP_Seqment_ba%C5%9Fl%C4%B1%C4%9F%C4%B1.png"><img src="https://upload.wikimedia.org/wikipedia/commons/d/de/TCP_Seqment_ba%C5%9Fl%C4%B1%C4%9F%C4%B1.png" alt="TcpSegment" /></a></p>
+
+<p><a href="https://commons.wikimedia.org/wiki/File:TCP_Seqment_ba%C5%9Fl%C4%B1%C4%9F%C4%B1.png"><img src="https://upload.wikimedia.org/wikipedia/commons/d/de/TCP_Seqment_ba%C5%9Fl%C4%B1%C4%9F%C4%B1.png" alt="TcpSegment" /></a></p>
+:ET

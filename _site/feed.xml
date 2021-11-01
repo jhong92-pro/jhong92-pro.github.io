@@ -1,4 +1,88 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://jhong92-pro.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://jhong92-pro.github.io/" rel="alternate" type="text/html" /><updated>2021-10-14T23:27:19+09:00</updated><id>https://jhong92-pro.github.io/feed.xml</id><title type="html">Site Title</title><subtitle>An amazing website.</subtitle><author><name>익명</name></author><entry><title type="html">Chapter2 application layer</title><link href="https://jhong92-pro.github.io/%EC%BB%B4%ED%93%A8%ED%84%B0%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EC%BB%B4%EB%84%A4/" rel="alternate" type="text/html" title="Chapter2 application layer" /><published>2021-10-04T00:00:00+09:00</published><updated>2021-10-04T00:00:00+09:00</updated><id>https://jhong92-pro.github.io/%EC%BB%B4%ED%93%A8%ED%84%B0%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EC%BB%B4%EB%84%A4</id><content type="html" xml:base="https://jhong92-pro.github.io/%EC%BB%B4%ED%93%A8%ED%84%B0%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EC%BB%B4%EB%84%A4/">&lt;h2 id=&quot;server-client-architecture&quot;&gt;Server Client Architecture&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://jhong92-pro.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://jhong92-pro.github.io/" rel="alternate" type="text/html" /><updated>2021-10-31T17:20:28+09:00</updated><id>https://jhong92-pro.github.io/feed.xml</id><title type="html">Site Title</title><subtitle>An amazing website.</subtitle><author><name>익명</name></author><entry><title type="html">Chapter3 Transport Layer</title><link href="https://jhong92-pro.github.io/%EC%BB%B4%ED%93%A8%ED%84%B0%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EC%BB%B4%EB%84%A4_chapter3/" rel="alternate" type="text/html" title="Chapter3 Transport Layer" /><published>2021-10-19T00:00:00+09:00</published><updated>2021-10-19T00:00:00+09:00</updated><id>https://jhong92-pro.github.io/%EC%BB%B4%ED%93%A8%ED%84%B0%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EC%BB%B4%EB%84%A4_chapter3</id><content type="html" xml:base="https://jhong92-pro.github.io/%EC%BB%B4%ED%93%A8%ED%84%B0%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EC%BB%B4%EB%84%A4_chapter3/">&lt;h2 id=&quot;transport-vs-network-layer&quot;&gt;Transport vs. network layer&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Network layer : 호스트끼리 통신&lt;/li&gt;
+  &lt;li&gt;Transport layer : 호스트의 프로세스끼리 통신&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;multiplexing-demultiplexing&quot;&gt;Multiplexing, Demultiplexing&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Multiplexings&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Multiplexing : 여러신호를 변환하여 하나의 매체에 담아 보냄&lt;/li&gt;
+  &lt;li&gt;데이터 송신 시 ‘여러’ 소켓의 데이터가 header를 달고 ‘하나의’ transport layer로 보내짐&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Demultiplexing&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Demultiplexing : 매체에 담긴 신호를 원래의 신호로 복원&lt;/li&gt;
+  &lt;li&gt;데이터 수신 시 transport layer로 부터 받은 데이터 여러개를 알맞은 소켓으로 보냄
+TCP는 호스트의 application마다 socket이 있기 때문에
+ source IP address
+ source port number
+ dest IP address
+ dest port number
+위 네 개의 정보를 보고 알맞은 소켓으로 데이터 전달(UDP는 source 정보 필요 없음)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;udp&quot;&gt;UDP&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;최소기능&lt;/li&gt;
+  &lt;li&gt;best effort : 곧이 곧대로 데이터 전달만 해줌&lt;/li&gt;
+  &lt;li&gt;connectionless : 데이터끼리 독립적임, 순서없음&lt;/li&gt;
+  &lt;li&gt;사용 예
+    &lt;ul&gt;
+      &lt;li&gt;스트리밍 : 손실 나도 ok, 속도 보장 해야함&lt;/li&gt;
+      &lt;li&gt;DNS : 한번 쿼리보내고 받으면 끝나기 때문에 connection 안맺어도 됨&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;reliable transfer 하려면 application 단에서 순서, 에러체크 해야 함&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;UDP checksum&lt;/strong&gt;
+오류 검출&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;헤더의 모든 값을 16비트 단위로 모두 더함&lt;/li&gt;
+  &lt;li&gt;add carry bit&lt;/li&gt;
+  &lt;li&gt;1의 보수(bit 반전)
+오류 검출만 하고 이후로 하는 건 없다&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;reliable-data-transfer이-되기-위한-조건&quot;&gt;reliable data transfer이 되기 위한 조건&lt;/h2&gt;
+&lt;p&gt;reliable data transfer : 데이터가 오류없이 전송되는 것&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Checksum : 오류발생 여부를 알려줘야 함&lt;/li&gt;
+  &lt;li&gt;Acknowledgement : receiver가 sender에게 패킷을 받았다고 알려줌&lt;/li&gt;
+  &lt;li&gt;Negative Acknowledgement : receiver가 sender에게 어떤 패킷이 오류인지 알림&lt;/li&gt;
+  &lt;li&gt;Timer : 일정 시간 후 ack 또는 n-ack 이 오지 않으면 network drop 되었다고 판단, 재전송
+같은 sequence number data 데이터 받으면&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(=재전송으로 인해 receiver가 동일한 데이터 받으면)&lt;/code&gt; app에서 버린다&lt;/li&gt;
+  &lt;li&gt;Pipeline : 여러개의 데이터를 전송할 수 있음&lt;/li&gt;
+  &lt;li&gt;Window : pipeline에서 ack를 받지 않고 최대 전달 할 수 있는 패킷의 수&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;tcp&quot;&gt;TCP&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;특징&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;point to point : one sender, one receiver&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(!=multicasting)&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;byte stream : 데이터의 경계 없음, msg buffer에 메시지 담아 처리&lt;/li&gt;
+  &lt;li&gt;pipelined&lt;/li&gt;
+  &lt;li&gt;duplex : 동일 회선으로 쌍방 소통 가능&lt;/li&gt;
+  &lt;li&gt;connection-oriented&lt;/li&gt;
+  &lt;li&gt;flow control, congestion control&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;TCP Segment Header&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;source port #, dest port #&lt;/li&gt;
+  &lt;li&gt;sequence number&lt;/li&gt;
+  &lt;li&gt;acknowledgement number : 이 값이 N 이면 N-1까진 잘 받았고 N번째 값 받을 차례라는 뜻&lt;/li&gt;
+  &lt;li&gt;flg
+URG : urgent data(잘 안씀)
+ACK : ack 정보가 있다는 뜻
+PSH : push data now
+RST, SYN, FIN : connection setup 때 씀&lt;/li&gt;
+  &lt;li&gt;receive window : buffer size 에 의해 결정, 이 값이 M 이라면 N~M 번째 데이터는 stream으로 계속 보내도 됨&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://commons.wikimedia.org/wiki/File:TCP_Seqment_ba%C5%9Fl%C4%B1%C4%9F%C4%B1.png#file&quot;&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/d/de/TCP_Seqment_ba%C5%9Fl%C4%B1%C4%9F%C4%B1.png&quot; alt=&quot;TcpSegment&quot; /&gt;&lt;/a&gt;&lt;/p&gt;</content><author><name>익명</name></author><category term="컴퓨터 네트워크" /><category term="복습" /><summary type="html">Transport vs. network layer Network layer : 호스트끼리 통신 Transport layer : 호스트의 프로세스끼리 통신</summary></entry><entry><title type="html">Chapter2 application layer</title><link href="https://jhong92-pro.github.io/%EC%BB%B4%ED%93%A8%ED%84%B0%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EC%BB%B4%EB%84%A4_chapter2/" rel="alternate" type="text/html" title="Chapter2 application layer" /><published>2021-10-04T00:00:00+09:00</published><updated>2021-10-04T00:00:00+09:00</updated><id>https://jhong92-pro.github.io/%EC%BB%B4%ED%93%A8%ED%84%B0%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EC%BB%B4%EB%84%A4_chapter2</id><content type="html" xml:base="https://jhong92-pro.github.io/%EC%BB%B4%ED%93%A8%ED%84%B0%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EC%BB%B4%EB%84%A4_chapter2/">&lt;h2 id=&quot;server-client-architecture&quot;&gt;Server Client Architecture&lt;/h2&gt;
 &lt;p&gt;서버&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;always-on host&lt;/li&gt;
@@ -261,6 +345,15 @@ RR format: (name, value, type, ttl)&lt;/p&gt;
   &lt;li&gt;type=CNAME : name=alias, value = canonical name, 우리가 www.ibm.com 이라고 하는 것은 별칭일 수도 있다. servereast.backup2.ibm.com가 실제이름이고 실제이름이 복잡할 때 쓸 수 있다.&lt;/li&gt;
   &lt;li&gt;type=MX : name=domain, value=mail server&lt;/li&gt;
   &lt;li&gt;ttl은 캐싱의 신선도를 체크할 때 쓰인다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;socket&quot;&gt;Socket&lt;/h1&gt;
+&lt;ul&gt;
+  &lt;li&gt;데이터 송수신 시 생성되는 소프트웨어.&lt;/li&gt;
+  &lt;li&gt;애플리케이션끼리 통신할 때 소켓의 routine을 따라야 통신 가능하다.&lt;/li&gt;
+  &lt;li&gt;통신하는 방법에 따라 소켓의 차이가 있다.(TCP/UDP)
+TCP : 클라이언트의 통신 요청 마다 소켓 하나씩 생성
+UDP : 소켓 하나&lt;/li&gt;
 &lt;/ul&gt;</content><author><name>익명</name></author><category term="컴퓨터 네트워크" /><category term="복습" /><summary type="html">Server Client Architecture 서버 always-on host IP 주소 고정 데이터 센터 존재</summary></entry><entry><title type="html">MVC의 한계와 스프링 기본 구조</title><link href="https://jhong92-pro.github.io/spring/MVC%EC%9D%98-%ED%95%9C%EA%B3%84%EC%99%80-%EC%8A%A4%ED%94%84%EB%A7%81-%EA%B8%B0%EB%B3%B8-%EA%B5%AC%EC%A1%B0/" rel="alternate" type="text/html" title="MVC의 한계와 스프링 기본 구조" /><published>2021-08-25T00:00:00+09:00</published><updated>2021-08-25T00:00:00+09:00</updated><id>https://jhong92-pro.github.io/spring/MVC%EC%9D%98%20%ED%95%9C%EA%B3%84%EC%99%80%20%EC%8A%A4%ED%94%84%EB%A7%81%20%EA%B8%B0%EB%B3%B8%20%EA%B5%AC%EC%A1%B0</id><content type="html" xml:base="https://jhong92-pro.github.io/spring/MVC%EC%9D%98-%ED%95%9C%EA%B3%84%EC%99%80-%EC%8A%A4%ED%94%84%EB%A7%81-%EA%B8%B0%EB%B3%B8-%EA%B5%AC%EC%A1%B0/">&lt;p&gt;&lt;a href=&quot;https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-mvc-1&quot;&gt;스프링 MVC 1편 - 백엔드 웹 개발 핵심 기술&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;기존-서블릿jsp-의-한계&quot;&gt;기존 서블릿+JSP 의 한계&lt;/h2&gt;

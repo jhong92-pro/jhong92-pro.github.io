@@ -1,0 +1,6 @@
+I"�<h2 id="transport-vs-network-layer">Transport vs. network layer</h2>
+<ul>
+  <li>Network layer : 호스트끼리 통신</li>
+  <li>Transport layer : 호스트의 프로세스끼리 통신</li>
+</ul>
+:ET
