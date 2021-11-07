@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://jhong92-pro.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://jhong92-pro.github.io/" rel="alternate" type="text/html" /><updated>2021-10-31T17:20:28+09:00</updated><id>https://jhong92-pro.github.io/feed.xml</id><title type="html">Site Title</title><subtitle>An amazing website.</subtitle><author><name>익명</name></author><entry><title type="html">Chapter3 Transport Layer</title><link href="https://jhong92-pro.github.io/%EC%BB%B4%ED%93%A8%ED%84%B0%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EC%BB%B4%EB%84%A4_chapter3/" rel="alternate" type="text/html" title="Chapter3 Transport Layer" /><published>2021-10-19T00:00:00+09:00</published><updated>2021-10-19T00:00:00+09:00</updated><id>https://jhong92-pro.github.io/%EC%BB%B4%ED%93%A8%ED%84%B0%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EC%BB%B4%EB%84%A4_chapter3</id><content type="html" xml:base="https://jhong92-pro.github.io/%EC%BB%B4%ED%93%A8%ED%84%B0%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EC%BB%B4%EB%84%A4_chapter3/">&lt;h2 id=&quot;transport-vs-network-layer&quot;&gt;Transport vs. network layer&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://jhong92-pro.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://jhong92-pro.github.io/" rel="alternate" type="text/html" /><updated>2021-11-07T23:57:12+09:00</updated><id>https://jhong92-pro.github.io/feed.xml</id><title type="html">Site Title</title><subtitle>An amazing website.</subtitle><author><name>익명</name></author><entry><title type="html">Chapter3 Transport Layer</title><link href="https://jhong92-pro.github.io/%EC%BB%B4%ED%93%A8%ED%84%B0%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EC%BB%B4%EB%84%A4_chapter3/" rel="alternate" type="text/html" title="Chapter3 Transport Layer" /><published>2021-10-19T00:00:00+09:00</published><updated>2021-10-19T00:00:00+09:00</updated><id>https://jhong92-pro.github.io/%EC%BB%B4%ED%93%A8%ED%84%B0%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EC%BB%B4%EB%84%A4_chapter3</id><content type="html" xml:base="https://jhong92-pro.github.io/%EC%BB%B4%ED%93%A8%ED%84%B0%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EC%BB%B4%EB%84%A4_chapter3/">&lt;h2 id=&quot;transport-vs-network-layer&quot;&gt;Transport vs. network layer&lt;/h2&gt;
 &lt;ul&gt;
   &lt;li&gt;Network layer : 호스트끼리 통신&lt;/li&gt;
   &lt;li&gt;Transport layer : 호스트의 프로세스끼리 통신&lt;/li&gt;
@@ -50,7 +50,7 @@ TCP는 호스트의 application마다 socket이 있기 때문에
 &lt;p&gt;reliable data transfer : 데이터가 오류없이 전송되는 것&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;Checksum : 오류발생 여부를 알려줘야 함&lt;/li&gt;
-  &lt;li&gt;Acknowledgement : receiver가 sender에게 패킷을 받았다고 알려줌&lt;/li&gt;
+  &lt;li&gt;Acknowledgement : receiver가 sender에게 패킷을 받았다고 알려줌(다음 ack는 seq+data_len)&lt;/li&gt;
   &lt;li&gt;Negative Acknowledgement : receiver가 sender에게 어떤 패킷이 오류인지 알림&lt;/li&gt;
   &lt;li&gt;Timer : 일정 시간 후 ack 또는 n-ack 이 오지 않으면 network drop 되었다고 판단, 재전송
 같은 sequence number data 데이터 받으면&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(=재전송으로 인해 receiver가 동일한 데이터 받으면)&lt;/code&gt; app에서 버린다&lt;/li&gt;
@@ -82,7 +82,100 @@ RST, SYN, FIN : connection setup 때 씀&lt;/li&gt;
   &lt;li&gt;receive window : buffer size 에 의해 결정, 이 값이 M 이라면 N~M 번째 데이터는 stream으로 계속 보내도 됨&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://commons.wikimedia.org/wiki/File:TCP_Seqment_ba%C5%9Fl%C4%B1%C4%9F%C4%B1.png#file&quot;&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/d/de/TCP_Seqment_ba%C5%9Fl%C4%B1%C4%9F%C4%B1.png&quot; alt=&quot;TcpSegment&quot; /&gt;&lt;/a&gt;&lt;/p&gt;</content><author><name>익명</name></author><category term="컴퓨터 네트워크" /><category term="복습" /><summary type="html">Transport vs. network layer Network layer : 호스트끼리 통신 Transport layer : 호스트의 프로세스끼리 통신</summary></entry><entry><title type="html">Chapter2 application layer</title><link href="https://jhong92-pro.github.io/%EC%BB%B4%ED%93%A8%ED%84%B0%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EC%BB%B4%EB%84%A4_chapter2/" rel="alternate" type="text/html" title="Chapter2 application layer" /><published>2021-10-04T00:00:00+09:00</published><updated>2021-10-04T00:00:00+09:00</updated><id>https://jhong92-pro.github.io/%EC%BB%B4%ED%93%A8%ED%84%B0%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EC%BB%B4%EB%84%A4_chapter2</id><content type="html" xml:base="https://jhong92-pro.github.io/%EC%BB%B4%ED%93%A8%ED%84%B0%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EC%BB%B4%EB%84%A4_chapter2/">&lt;h2 id=&quot;server-client-architecture&quot;&gt;Server Client Architecture&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://commons.wikimedia.org/wiki/File:TCP_Seqment_ba%C5%9Fl%C4%B1%C4%9F%C4%B1.png#file&quot;&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/d/de/TCP_Seqment_ba%C5%9Fl%C4%B1%C4%9F%C4%B1.png&quot; alt=&quot;TcpSegment&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;TCP timeout&lt;/strong&gt;
+Timeout 기준 : EstimatedRTT + safety margin&lt;br /&gt;
+EstimatedRTT = (1-a) * EstimatedRTT + a * sampleRTT &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;a는 상수&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;sampleRTT : 실제로 측정된 RTT&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;TCP retransmission scenario&lt;/strong&gt;
+&lt;img src=&quot;/assets/img/ack scenario.png&quot; alt=&quot;ackScenario&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;ACK lost : timeout 발생으로 인해 같은 패킷을 다시 보냄&lt;/li&gt;
+  &lt;li&gt;premature : timeout 발생으로 인해 중복된 데이터 받음
+sender는 마지막 데이터로 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Seq=92, 8 bytes&lt;/code&gt;를 주었지만 receiver는 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Seq=100, 20 bytes&lt;/code&gt;까지는 잘 받은 상태라 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ACK=120&lt;/code&gt;전송
+&lt;img src=&quot;/assets/img/cumulative ACk.png&quot; alt=&quot;cumulativeACk&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;cumulative ACK : &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;host A&lt;/code&gt;가 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ACK=100&lt;/code&gt;이 lost 되어도 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ACK=120&lt;/code&gt;을 받았기 때문에 다음 패킷으로 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;seq=120&lt;/code&gt;을 전달&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;TCP ACK generation&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;모든 데이터가 순서에 맞게 도착 : ACK를 바로바로 보내지 않고 여러 데이터 받은 후 하나만 보냄(위의 예시에서 처럼 모든 데이터마다 ACK를 보내주지 않아도 된다)&lt;br /&gt;
+&lt;img src=&quot;/assets/img/partially filled.png&quot; alt=&quot;partiallyFilled&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;순서 틀림, segment 사이 갭 존재 : duplicated ack(직전에 보냈던 ACK과 같은 ACK)&lt;/li&gt;
+  &lt;li&gt;부분적으로(왼쪽), 또는 완전히 갭 채워지는 segment : 즉시 ACK 보냄&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;TCP fast retransit&lt;/strong&gt;
+&lt;img src=&quot;/assets/img/fast retransmit.png&quot; alt=&quot;fastRetransmit&quot; /&gt;&lt;br /&gt;
+송신자가 3번의 같은 ACK(=b)를 보냈다면 b segment는 lost라고 확신, timeout 아니더라도 retransmit&lt;br /&gt;
+timeout까지 안 기다려도 됨&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(=fast retransmit)&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;TCP flow control&lt;/strong&gt;
+&lt;img src=&quot;/assets/img/flowcontrol.png&quot; alt=&quot;flowcontrol&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Receiver의 buffer이상으로 데이터가 들어오면 overflow&lt;/li&gt;
+  &lt;li&gt;Sender에게 free window 얼마나 있는지 헤더를 통해 알려줌&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(=rwnd)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;TCP Congestion Control&lt;/strong&gt;
+전송할 데이터가 많으면 network가 감당 못한다&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Slow Start
+&lt;img src=&quot;/assets/img/congestionslowstart.png&quot; alt=&quot;congestionslowstart&quot; /&gt;&lt;br /&gt;
+connection 시작 직후 적은 segment만 전송, 급속도로 증가
+&lt;img src=&quot;/assets/img/congestionsshthresh.png&quot; alt=&quot;congestionsshthresh&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;cwnd(congestion window)를 sshthresh 이전까지는 1 ACK 마다 1 segment씩 증가시킨다&lt;/li&gt;
+  &lt;li&gt;sshthresh 이후는 1 RTT마다 1 segment씩 증가시킨다&lt;/li&gt;
+  &lt;li&gt;loss 발생 시 sshthresh를 loss가 발생했던 cwnd의 절반으로 줄인다&lt;/li&gt;
+  &lt;li&gt;TCP Reno : loss 발생 시 cwnd를 sshthresh만큼 설정&lt;/li&gt;
+  &lt;li&gt;TCP Tahoe : loss 발생 시 cwnd를 1로 설정&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;TCP Fairness&lt;/strong&gt;
+각 client에게 fair하게 segment가 분배되어야 한다
+&lt;img src=&quot;/assets/img/congestionfair.png&quot; alt=&quot;congestionfair&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;다른 throughput으로 시작하더라도 Congestion Control에 의해 equal bandwidth share에 근접해진다&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;TCP connection establishing&lt;/strong&gt;
+TCP는 connection-oriented이기 때문에 연결을 맺기 위한 establishing 필요&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;2-way handshake
+&lt;img src=&quot;/assets/img/2wayhandshake.png&quot; alt=&quot;2wayhandshake&quot; /&gt;&lt;br /&gt;
+2-way 만으로도 문제 없어보이지만..
+&lt;img src=&quot;/assets/img/2wayhandshakefail.png&quot; alt=&quot;2wayhandshakefail&quot; /&gt;
+    &lt;ul&gt;
+      &lt;li&gt;connection 종료&lt;/li&gt;
+      &lt;li&gt;connection 종료되기 전 data가 서버로 도착&lt;/li&gt;
+      &lt;li&gt;서버가 connection 시작
+과 같은 과정을 거치면 서버만 connection이 연결된 상태!, 3-way handshake가 필요하다&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;3-way handshake
+&lt;img src=&quot;/assets/img/3wayhandshake.png&quot; alt=&quot;3wayhandshake&quot; /&gt;
+    &lt;ul&gt;
+      &lt;li&gt;client가 연결 요청&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(SYN bit set, Seq=x, x는 랜덤 값)&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;server가 응답&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(SYN &amp;amp; ACK bit set, Seq=y, y는 랜덤 값, ACK=x+1)&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;client는 server가 살아있다고 인식, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ACK=y+1&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;server는 client가 살아있다고 인식
+seq random 값으로 설정해 이전에 했던 연결과 구분&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;TCP closing&lt;/strong&gt;
+연결을 해제할 때는 TCP가 duplex이기 때문에 client, server 둘 다 연결을 끊어주어야 한다&lt;br /&gt;
+&lt;img src=&quot;/assets/img/TCPclosing.png&quot; alt=&quot;TCPclosing&quot; /&gt;&lt;br /&gt;
+establish 할 때와 다른 점과 이유는..&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;CLOSE_WAIT(server state) : client는 연결을 끊고 싶어 하지만 server는 여전히 전달할 데이터가 있을 지도 모르기 때문에&lt;/li&gt;
+  &lt;li&gt;TIMED_WAIT(client state) : server의 FIN에 대한 client의 ACK가 lost 되면 server가 FIN을 다시 보낸다. TIMED_WAIT 없이 close 상태가 되면 해당 FIN을 받을 수 없고 그에 따른 ACK를 보낼 수 없다. 따라서 서버는 ACK를 무한히 기다리는 상태가 된다.&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>익명</name></author><category term="컴퓨터 네트워크" /><category term="복습" /><summary type="html">Transport vs. network layer Network layer : 호스트끼리 통신 Transport layer : 호스트의 프로세스끼리 통신</summary></entry><entry><title type="html">Chapter2 application layer</title><link href="https://jhong92-pro.github.io/%EC%BB%B4%ED%93%A8%ED%84%B0%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EC%BB%B4%EB%84%A4_chapter2/" rel="alternate" type="text/html" title="Chapter2 application layer" /><published>2021-10-04T00:00:00+09:00</published><updated>2021-10-04T00:00:00+09:00</updated><id>https://jhong92-pro.github.io/%EC%BB%B4%ED%93%A8%ED%84%B0%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EC%BB%B4%EB%84%A4_chapter2</id><content type="html" xml:base="https://jhong92-pro.github.io/%EC%BB%B4%ED%93%A8%ED%84%B0%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EC%BB%B4%EB%84%A4_chapter2/">&lt;h2 id=&quot;server-client-architecture&quot;&gt;Server Client Architecture&lt;/h2&gt;
 &lt;p&gt;서버&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;always-on host&lt;/li&gt;

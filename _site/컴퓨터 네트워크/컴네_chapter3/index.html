@@ -329,7 +329,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          1 minute read
+          3 minute read
         
       </span>
     
@@ -393,7 +393,7 @@ TCP는 호스트의 application마다 socket이 있기 때문에
 <p>reliable data transfer : 데이터가 오류없이 전송되는 것</p>
 <ul>
   <li>Checksum : 오류발생 여부를 알려줘야 함</li>
-  <li>Acknowledgement : receiver가 sender에게 패킷을 받았다고 알려줌</li>
+  <li>Acknowledgement : receiver가 sender에게 패킷을 받았다고 알려줌(다음 ack는 seq+data_len)</li>
   <li>Negative Acknowledgement : receiver가 sender에게 어떤 패킷이 오류인지 알림</li>
   <li>Timer : 일정 시간 후 ack 또는 n-ack 이 오지 않으면 network drop 되었다고 판단, 재전송
 같은 sequence number data 데이터 받으면<code class="language-plaintext highlighter-rouge">(=재전송으로 인해 receiver가 동일한 데이터 받으면)</code> app에서 버린다</li>
@@ -426,6 +426,99 @@ RST, SYN, FIN : connection setup 때 씀</li>
 </ul>
 
 <p><a href="https://commons.wikimedia.org/wiki/File:TCP_Seqment_ba%C5%9Fl%C4%B1%C4%9F%C4%B1.png#file"><img src="https://upload.wikimedia.org/wikipedia/commons/d/de/TCP_Seqment_ba%C5%9Fl%C4%B1%C4%9F%C4%B1.png" alt="TcpSegment" /></a></p>
+
+<p><strong>TCP timeout</strong>
+Timeout 기준 : EstimatedRTT + safety margin<br />
+EstimatedRTT = (1-a) * EstimatedRTT + a * sampleRTT <code class="language-plaintext highlighter-rouge">a는 상수</code></p>
+<ul>
+  <li>sampleRTT : 실제로 측정된 RTT</li>
+</ul>
+
+<p><strong>TCP retransmission scenario</strong>
+<img src="/assets/img/ack scenario.png" alt="ackScenario" /></p>
+<ul>
+  <li>ACK lost : timeout 발생으로 인해 같은 패킷을 다시 보냄</li>
+  <li>premature : timeout 발생으로 인해 중복된 데이터 받음
+sender는 마지막 데이터로 <code class="language-plaintext highlighter-rouge">Seq=92, 8 bytes</code>를 주었지만 receiver는 <code class="language-plaintext highlighter-rouge">Seq=100, 20 bytes</code>까지는 잘 받은 상태라 <code class="language-plaintext highlighter-rouge">ACK=120</code>전송
+<img src="/assets/img/cumulative ACk.png" alt="cumulativeACk" /></li>
+  <li>cumulative ACK : <code class="language-plaintext highlighter-rouge">host A</code>가 <code class="language-plaintext highlighter-rouge">ACK=100</code>이 lost 되어도 <code class="language-plaintext highlighter-rouge">ACK=120</code>을 받았기 때문에 다음 패킷으로 <code class="language-plaintext highlighter-rouge">seq=120</code>을 전달</li>
+</ul>
+
+<p><strong>TCP ACK generation</strong></p>
+<ul>
+  <li>모든 데이터가 순서에 맞게 도착 : ACK를 바로바로 보내지 않고 여러 데이터 받은 후 하나만 보냄(위의 예시에서 처럼 모든 데이터마다 ACK를 보내주지 않아도 된다)<br />
+<img src="/assets/img/partially filled.png" alt="partiallyFilled" /></li>
+  <li>순서 틀림, segment 사이 갭 존재 : duplicated ack(직전에 보냈던 ACK과 같은 ACK)</li>
+  <li>부분적으로(왼쪽), 또는 완전히 갭 채워지는 segment : 즉시 ACK 보냄</li>
+</ul>
+
+<p><strong>TCP fast retransit</strong>
+<img src="/assets/img/fast retransmit.png" alt="fastRetransmit" /><br />
+송신자가 3번의 같은 ACK(=b)를 보냈다면 b segment는 lost라고 확신, timeout 아니더라도 retransmit<br />
+timeout까지 안 기다려도 됨<code class="language-plaintext highlighter-rouge">(=fast retransmit)</code></p>
+
+<p><strong>TCP flow control</strong>
+<img src="/assets/img/flowcontrol.png" alt="flowcontrol" /></p>
+<ul>
+  <li>Receiver의 buffer이상으로 데이터가 들어오면 overflow</li>
+  <li>Sender에게 free window 얼마나 있는지 헤더를 통해 알려줌<code class="language-plaintext highlighter-rouge">(=rwnd)</code></li>
+</ul>
+
+<p><strong>TCP Congestion Control</strong>
+전송할 데이터가 많으면 network가 감당 못한다</p>
+<ul>
+  <li>Slow Start
+<img src="/assets/img/congestionslowstart.png" alt="congestionslowstart" /><br />
+connection 시작 직후 적은 segment만 전송, 급속도로 증가
+<img src="/assets/img/congestionsshthresh.png" alt="congestionsshthresh" /></li>
+  <li>cwnd(congestion window)를 sshthresh 이전까지는 1 ACK 마다 1 segment씩 증가시킨다</li>
+  <li>sshthresh 이후는 1 RTT마다 1 segment씩 증가시킨다</li>
+  <li>loss 발생 시 sshthresh를 loss가 발생했던 cwnd의 절반으로 줄인다</li>
+  <li>TCP Reno : loss 발생 시 cwnd를 sshthresh만큼 설정</li>
+  <li>TCP Tahoe : loss 발생 시 cwnd를 1로 설정</li>
+</ul>
+
+<p><strong>TCP Fairness</strong>
+각 client에게 fair하게 segment가 분배되어야 한다
+<img src="/assets/img/congestionfair.png" alt="congestionfair" /></p>
+<ul>
+  <li>다른 throughput으로 시작하더라도 Congestion Control에 의해 equal bandwidth share에 근접해진다</li>
+</ul>
+
+<p><strong>TCP connection establishing</strong>
+TCP는 connection-oriented이기 때문에 연결을 맺기 위한 establishing 필요</p>
+<ul>
+  <li>2-way handshake
+<img src="/assets/img/2wayhandshake.png" alt="2wayhandshake" /><br />
+2-way 만으로도 문제 없어보이지만..
+<img src="/assets/img/2wayhandshakefail.png" alt="2wayhandshakefail" />
+    <ul>
+      <li>connection 종료</li>
+      <li>connection 종료되기 전 data가 서버로 도착</li>
+      <li>서버가 connection 시작
+과 같은 과정을 거치면 서버만 connection이 연결된 상태!, 3-way handshake가 필요하다</li>
+    </ul>
+  </li>
+  <li>3-way handshake
+<img src="/assets/img/3wayhandshake.png" alt="3wayhandshake" />
+    <ul>
+      <li>client가 연결 요청<code class="language-plaintext highlighter-rouge">(SYN bit set, Seq=x, x는 랜덤 값)</code></li>
+      <li>server가 응답<code class="language-plaintext highlighter-rouge">(SYN &amp; ACK bit set, Seq=y, y는 랜덤 값, ACK=x+1)</code></li>
+      <li>client는 server가 살아있다고 인식, <code class="language-plaintext highlighter-rouge">ACK=y+1</code></li>
+      <li>server는 client가 살아있다고 인식
+seq random 값으로 설정해 이전에 했던 연결과 구분</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>TCP closing</strong>
+연결을 해제할 때는 TCP가 duplex이기 때문에 client, server 둘 다 연결을 끊어주어야 한다<br />
+<img src="/assets/img/TCPclosing.png" alt="TCPclosing" /><br />
+establish 할 때와 다른 점과 이유는..</p>
+<ul>
+  <li>CLOSE_WAIT(server state) : client는 연결을 끊고 싶어 하지만 server는 여전히 전달할 데이터가 있을 지도 모르기 때문에</li>
+  <li>TIMED_WAIT(client state) : server의 FIN에 대한 client의 ACK가 lost 되면 server가 FIN을 다시 보낸다. TIMED_WAIT 없이 close 상태가 되면 해당 FIN을 받을 수 없고 그에 따른 ACK를 보낼 수 없다. 따라서 서버는 ACK를 무한히 기다리는 상태가 된다.</li>
+</ul>
 
 
         
