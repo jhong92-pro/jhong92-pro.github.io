@@ -303,3 +303,9 @@ defaults:
       sidebar:
        nav : "navs"
   
+# Conversion
+markdown: kramdown
+highlighter: rouge
+lsi: false
+excerpt_separator: "\n\n"
+incremental: false

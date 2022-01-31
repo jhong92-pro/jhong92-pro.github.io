@@ -14,3 +14,5 @@ navs:
     children:
       - title: 컴퓨터 네트워크
         url: /categories/#컴퓨터 네트워크
+  - title: 인공지능
+    url: /categories/#인공지능
