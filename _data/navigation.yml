@@ -6,13 +6,9 @@ main:
     url: /tags
 
 navs:
-  - title: 웹 개발
-    children:
-      - title: Spring
-        url: /categories/#Spring
+  - title: Spring
+    url: /categories/#Spring
   - title: 네트워크
-    children:
-      - title: 컴퓨터 네트워크
-        url: /categories/#컴퓨터 네트워크
+    url: /categories/#컴퓨터 네트워크
   - title: 인공지능
     url: /categories/#인공지능
