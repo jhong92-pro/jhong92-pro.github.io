@@ -87,15 +87,17 @@ a, b가 커지면 자릿수에 비례해서 시간복잡도가 증가합니다.
 같이 보시면 좋을 것 같아요.  
   
 적당히 큰 수의 범위는 다음과 같습니다.  
-```C
+```cpp
   #define KARATSUBA_CUTOFF 70
   #define KARATSUBA_SQUARE_CUTOFF (2 * KARATSUBA_CUTOFF)
-  #
-  #
+  //
+  // ...
+  //
   i = a == b ? KARATSUBA_SQUARE_CUTOFF : KARATSUBA_CUTOFF;
 ```  
 적당히 큰 수는,  
-곱하는 두 수가 같다면 `KARATSUBA_SQUARE_CUTOFF`, 그렇지 않다면 `KARATSUBA_CUTOFF` 자릿수보다 큰 수 입니다.  
+곱하는 두 수가 같다면 `KARATSUBA_SQUARE_CUTOFF`, 그렇지 않다면 `KARATSUBA_CUTOFF` BASE 자릿수보다 큰 수 입니다.  
+(BASE가 무엇인지는 python에서 integer가 어떻게 다루어지는 지 보면 될 것 같습니다)  
   
 또한, `2 * asize` <= `bsize` 이면(a는 작은 수, b는 큰 수),  
 b를 쪼갠 후 다시 호출합니다.  
@@ -110,8 +112,8 @@ output = 0
 4. `output += b[3]*a` 후 비트 이동
 의 과정을 수행합니다.  
   
-이렇게 하는 이유는 카라추바 곱셈의 시간복잡도인 $$O(n^{\log _{2}3})$$에서 n이 곱하는 두 수 중 큰 수이기 때문입니다.  
-cpython에서 위 함수를 `k_lopsided_mul(a, b)`로 정의하고 있습니다.
+곱셈을 나눠서 하는 이유는 카라추바 곱셈의 시간복잡도인 $$O(n^{\log _{2}3})$$에서 n이 곱하는 두 수 중 큰 수이기 때문입니다.  
+위와 같이 곱셈을 나눠서 하는 것을 cpython에서 위 함수를 `k_lopsided_mul(a, b)`로 정의하고 있습니다.  
   
 개념적으로만 코드를 작성하자면(유사코드 정도로 봐주세요),  
 ```python
@@ -152,8 +154,8 @@ cpython에서 위 함수를 `k_lopsided_mul(a, b)`로 정의하고 있습니다.
 즉, $$\Theta (nlogn)$$ 자릿수의 수에 $$\Theta (logn)$$ 자릿수의 수를 `n/2`번 곱하는 것과 같습니다.  
   
 70자릿수가 cutoff이기 때문에  
-`2^71 - 1  = 2361183241434822606848`까지는 카라추바 알고리즘을 고려하지 않아도 됩니다.  
-`factorial(2361183241434822606848-1)`까지는 gradeschool multiplication만 사용됩니다.  
+`(2^30)^71 - 1`까지는 카라추바 알고리즘을 고려하지 않아도 됩니다.  
+`factorial((2^30)^71 - 1)`까지는 gradeschool multiplication만 사용됩니다.  
   
 따라서 $$O(nlogn * logn * n/2) = O(n^2log^2n)$$  
 
