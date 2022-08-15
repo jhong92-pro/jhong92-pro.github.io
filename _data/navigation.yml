@@ -12,3 +12,5 @@ navs:
     url: /categories/#컴퓨터 네트워크
   - title: 인공지능
     url: /categories/#인공지능
+  - title: 알고리즘
+    url: /categories/#알고리즘
