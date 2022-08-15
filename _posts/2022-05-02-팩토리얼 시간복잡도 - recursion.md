@@ -143,21 +143,33 @@ output = 0
 드디어 최종 시간복잡도를 계산해보겠습니다.  
 `factorial(n)`에서 n이 충분히 크다고 가정을 해보겠습니다.  
   
-팩토리얼의 `n/2`번째 곱셈까지는 $$\Theta ((n/2)*log(n/2))$$ 이기 떄문에 $$\Theta (nlogn)$$ 로 표기해도 무방합니다.  
-또한, `n/2`번째 곱셈까지 나온 수를 `n/2`만큼 반복해서 팩토리얼이 수행됩니다.  
   
-제가 하고 싶은 말은,  
-`factorial(n) = factorial(n/2) * (n/2+1)*(n/2+2)*(n/2+3)*...*n`  
-`factorial(n/2)`의 자릿수는 $$\Theta (nlogn)$$  
-`n/2+1 ~ n`의 자릿수는 $$\Theta (logn)$$  
+제가 처음에 헷갈린 부분은  
+k번째 step에서 곱셈 시간복잡도는
+$$\Theta (klogk)$$ 자릿수의 수에 $$\Theta (logk)$$ 자릿수의 수를 곱하는 것이라고 생각했었습니다.  
   
-즉, $$\Theta (nlogn)$$ 자릿수의 수에 $$\Theta (logn)$$ 자릿수의 수를 `n/2`번 곱하는 것과 같습니다.  
+하지만, 곱셈의 시간복잡도는 피연산자의 자릿수뿐만 아니라 곱셈의 결과의 자릿수에도 비례합니다.  
+`factorial(k)`의 자릿수는 $$\Theta (klogk)$$이고,
+k번째 step 때 time complexity는 $$\Theta (klogk)$$입니다.  
+
+<span style='background-color: #fff5b1; color:#808080'> 출처에서는 이렇게 주장하고 있지만,  
+`divide and conquer`에서 기술할 내용과 충돌되는 부분이 있습니다.</span>  
+  
+어쨌든, 위와 같은 방법으로 시간복잡도를 계산하면  
+  
+$$
+\begin{align}
+&O(factorial(n)) \\
+&= O(2log2 + 3log3 + 4log4 +... + nlogn) \\
+&\leq O(nlogn + nlogn + nlogn +... + nlogn)
+\end{align}
+$$  
   
 70자릿수가 cutoff이기 때문에  
 `(2^30)^71 - 1`까지는 카라추바 알고리즘을 고려하지 않아도 됩니다.  
 `factorial((2^30)^71 - 1)`까지는 gradeschool multiplication만 사용됩니다.  
   
-따라서 $$O(nlogn * logn * n/2) = O(n^2log^2n)$$  
+따라서 $$O(nlogn * n) = O(n^2logn)$$  
 
 ## 다음
 1. factorial을 divide and conquer 방법으로 구현하면 더 빠른 팩토리얼을 구현할 수 있습니다(원래 여기까지 작성하려 했는데 양이 많네요)
@@ -172,4 +184,5 @@ output = 0
   
 
 *출처*  
-[https://www.cantorsparadise.com/factorials-and-how-to-compute-them-cb77ae8b497d](https://www.cantorsparadise.com/factorials-and-how-to-compute-them-cb77ae8b497d)
+[https://www.cantorsparadise.com/factorials-and-how-to-compute-them-cb77ae8b497d](https://www.cantorsparadise.com/factorials-and-how-to-compute-them-cb77ae8b497d)  
+http://numbers.computation.free.fr/Constants/Algorithms/splitting.html
